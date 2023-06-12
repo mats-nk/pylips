@@ -9,6 +9,6 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY [^settings.ini]* .
+COPY [^settings.ini]* ./
 
 ENTRYPOINT [ "python", "pylips.py" ]
