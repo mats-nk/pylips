@@ -25,6 +25,9 @@
 		},
 		"volume": {
 			"path": "audio/volume"
+		},
+		"ambilight_processed": {
+			"path": "ambilight/processed"
 		}
 	},
 	"post": {
@@ -224,7 +227,7 @@
 			"body": {
 				"values": [{
 					"value": {
-						"Nodeid": 2131230769,
+						"Nodeid": 2130968780,
 						"Controllable": "true",
 						"Available": "true",
 						"string_id": "Brightness",
