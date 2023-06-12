@@ -462,15 +462,27 @@ class Pylips:
                 if self.last_status["muted"] != muted or self.last_status["volume"] != volume:
                     self.mqtt.publish(str(self.config["MQTT"]["topic_pylips"]), json.dumps({"status":{"muted":muted, "volume":volume}}), retain = False)
 
+    # updates ambilight processed for MQTT status
+    def mqtt_update_ambilight_processed(self):
+        processed = self.run_command("ambilight_processed",None,self.verbose, False, False)
+        if processed is not None:
+            processed = json.loads(processed)
+            if "layer1" in processed:
+                led_top_0 = processed["layer1"]["top"]["0"]
+                led_top_7 = processed["layer1"]["top"]["7"]
+                if True:
+                    self.mqtt.publish(str(self.config["MQTT"]["topic_pylips"]), json.dumps({"status":{"led_top_0":led_top_0, "led_top_7": led_top_7}}), retain = False)
+
     # runs MQTT update functions with a specified update interval
     def start_mqtt_updater(self, verbose=True):
         print("Started MQTT status updater")
         while True:
             if self.mqtt_update_powerstate():
-                self.mqtt_update_volume()
-                self.mqtt_update_app()
-                self.mqtt_update_ambilight()
-                self.mqtt_update_ambihue()
+               self.mqtt_update_ambilight_processed()
+               # self.mqtt_update_volume()
+               # self.mqtt_update_app()
+               # self.mqtt_update_ambilight()
+               # self.mqtt_update_ambihue()
             time.sleep(int(self.config["DEFAULT"]["update_interval"]))
 
 if __name__ == '__main__':
